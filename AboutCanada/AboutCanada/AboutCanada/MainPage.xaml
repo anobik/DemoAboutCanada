@@ -2,34 +2,43 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AboutCanada"
-             x:Class="AboutCanada.MainPage">
-    <Grid>
+             x:Class="AboutCanada.MainPage" BackgroundColor="#D3D3D3">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
         <Grid.BindingContext>
             <local:MainPageViewModel></local:MainPageViewModel>
         </Grid.BindingContext>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="7*"></RowDefinition>
-            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="8*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Text="{Binding Path=Title, Mode=TwoWay}" FontSize="20" FontAttributes="Bold" TextColor="Black"></Label>
-        <Button x:Name="btnGetData" Grid.Row="2" Text="Get Canadian Data" Command="{Binding GetCanadianData, Mode=TwoWay}"></Button>
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=ListData, Mode=TwoWay}">
+        <Label Text="{Binding Path=Title}" FontSize="30" FontAttributes="Bold" TextColor="Black"></Label>
+        <Grid Grid.Row="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnGetData" Text="{Binding Path=CommandText, Mode=TwoWay}" Command="{Binding GetCanadianData}"></Button>
+            <Button x:Name="btnSortData" Grid.Column="1" Text="Sort Data" Command="{Binding SortCanadianData}"></Button>
+        </Grid>
+        <ListView Grid.Row="1" HasUnevenRows="True" ItemsSource="{Binding Path=ListData}" BackgroundColor="Transparent" HorizontalOptions="Fill" VerticalOptions="Fill">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid BackgroundColor="Red">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="6*"></RowDefinition>
-                            <RowDefinition Height="4*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="7*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Label Text="{Binding Path=title, Mode=TwoWay}" Grid.ColumnSpan="2"></Label>
-                        <Label Text="{Binding Path=description, Mode=TwoWay}" Grid.Row="1"></Label>
-                        <Image Source="{Binding Path=imageHref, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"></Image>
-                    </Grid>
+                    <ViewCell>
+                        <Grid BackgroundColor="White" Margin="10" VerticalOptions="CenterAndExpand">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="7*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label FontSize="15" FontAttributes="Bold" TextColor="Navy" Text="{Binding Path=title}" LineBreakMode="WordWrap" Grid.ColumnSpan="2"></Label>
+                            <Label FontSize="10" Text="{Binding Path=description}" LineBreakMode="WordWrap" Grid.Row="1"></Label>
+                            <Image Source="{Binding Path=imageHref}" Grid.Row="1" Grid.Column="1"></Image>
+                        </Grid>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
