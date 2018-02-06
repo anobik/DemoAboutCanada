@@ -23,11 +23,6 @@ namespace AboutCanada
     public class MainPageViewModel : INotifyPropertyChanged
     {
         /// <summary>
-        /// check progressbar visibility variable
-        /// </summary>
-        private bool isRequestMade;
-
-        /// <summary>
         /// title variable
         /// </summary>
         private string title;
@@ -46,6 +41,11 @@ namespace AboutCanada
         /// initial data for list
         /// </summary>
         private List<Row> sortedData;
+        
+        /// <summary>
+        /// check progressbar visibility variable
+        /// </summary>
+        public bool IsRequestMade { get; private set; }
 
         /// <summary>
         /// Title of the app
@@ -64,7 +64,7 @@ namespace AboutCanada
 
             }
         }
-        
+
         /// <summary>
         /// Title of the app
         /// </summary>
@@ -125,9 +125,9 @@ namespace AboutCanada
         /// </summary>
         public async void ExecuteSort()
         {
-            if (!isRequestMade)
+            if (!IsRequestMade)
             {
-                isRequestMade = true;
+                IsRequestMade = true;
                 await Task.Run(() =>
                 {
                     if (ListData != null)
@@ -140,7 +140,7 @@ namespace AboutCanada
 
                 ListData = (from obj in sortedData
                             select obj).ToList();
-                isRequestMade = false;
+                IsRequestMade = false;
             }
             else
             {
@@ -153,12 +153,12 @@ namespace AboutCanada
         /// </summary>
         public async void ExecuteGetRequest()
         {
-            if (!isRequestMade)
+            if (!IsRequestMade)
             {
-                isRequestMade = true;
+                IsRequestMade = true;
                 bool isSuccess = await GetData();
                 CommandText = isSuccess ? "Refresh Data" : "Get Data";
-                isRequestMade = false;
+                IsRequestMade = false;
             }
             else
             {
