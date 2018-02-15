@@ -2,11 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AboutCanada"
+             xmlns:b="Xamarin.Forms"
              x:Class="AboutCanada.MainPage" BackgroundColor="#D3D3D3">
-    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
-        <Grid.BindingContext>
-            <local:MainPageViewModel></local:MainPageViewModel>
-        </Grid.BindingContext>
+    <ContentPage.BindingContext>
+        <local:MainPageViewModel></local:MainPageViewModel>
+    </ContentPage.BindingContext>
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill" x:Name="gdContainer">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="8*"></RowDefinition>
@@ -19,9 +20,10 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button x:Name="btnGetData" Text="{Binding Path=CommandText, Mode=TwoWay}" Command="{Binding GetCanadianData}"></Button>
-            <Button x:Name="btnSortData" Grid.Column="1" Text="Sort Data" Command="{Binding SortCanadianData}"></Button>
+            <Button x:Name="btnSortData" Grid.Column="1" Text="Sort Data" Command="{Binding SortCanadianData}">
+            </Button>
         </Grid>
-        <ListView Grid.Row="1" HasUnevenRows="True" ItemsSource="{Binding Path=ListData}" BackgroundColor="Transparent" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <ListView ItemAppearing="ListView_ItemAppearing" CachingStrategy="RecycleElementAndDataTemplate" Grid.Row="1" HasUnevenRows="True" ItemsSource="{Binding Path=ListData}" BackgroundColor="Transparent" HorizontalOptions="Fill" VerticalOptions="Fill">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

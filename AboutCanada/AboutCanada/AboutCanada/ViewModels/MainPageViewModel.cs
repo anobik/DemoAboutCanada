@@ -35,7 +35,7 @@ namespace AboutCanada
         /// <summary>
         /// List data variable
         /// </summary>
-        private List<Row> listData = null;
+        private ObservableCollection<Row> listData = null;
 
         /// <summary>
         /// initial data for list
@@ -86,7 +86,7 @@ namespace AboutCanada
         /// <summary>
         /// List to store data
         /// </summary>
-        public List<Row> ListData
+        public ObservableCollection<Row> ListData
         {
             get
             {
@@ -111,6 +111,11 @@ namespace AboutCanada
         public ICommand SortCanadianData { get; private set; }
 
         /// <summary>
+        /// Command for sorting data
+        /// </summary>
+        public ICommand ListViewItemAppearing { get; private set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public MainPageViewModel()
@@ -118,6 +123,25 @@ namespace AboutCanada
             GetCanadianData = new Command(ExecuteGetRequest);
             SortCanadianData = new Command(ExecuteSort);
             CommandText = "Get Data";
+        }
+
+        /// <summary>
+        /// Populates the list lazily
+        /// </summary>
+        /// <param name="index">index of the viewcell</param>
+        public void PopulateListImages(object item)
+        {
+            int index = ListData.IndexOf(item as Row);
+            if(ListData.Count == index + 1)
+            {
+                int count = index + 1;
+                while(sortedData.Count > count && count < index + 10)
+                {
+                    ListData.Add(sortedData[count]);
+                    count++;
+                    OnPropertyChanged("ListData");
+                }
+            }
         }
 
         /// <summary>
@@ -132,14 +156,18 @@ namespace AboutCanada
                 {
                     if (ListData != null)
                     {
+                        // reverse elements that are displayed
+                        int index = ListData.Count;
+
+                        //clear the list
                         ListData.Clear();
                         ListData = null;
-                        sortedData.Reverse();
+
+                        //reverse the collection
+                        ListData = new ObservableCollection<Row>(sortedData.Take(index).Reverse());
                     }
                 });
 
-                ListData = (from obj in sortedData
-                            select obj).ToList();
                 IsRequestMade = false;
             }
             else
@@ -183,13 +211,13 @@ namespace AboutCanada
                     ListData.Clear();
                 }
 
-                sortedData = (from obj in data.rows
+                sortedData = new List<Row>((from obj in data.rows
                               where obj.description != null || obj.imageHref != null || obj.title != null
                               orderby obj.title
-                              select obj).ToList();
+                              select obj).ToList());
 
-                ListData = (from obj in sortedData
-                            select obj).ToList();
+                ListData = new ObservableCollection<Row>((from obj in sortedData
+                            select obj).Take(10).ToList());
                 ;
                 return true;
             }

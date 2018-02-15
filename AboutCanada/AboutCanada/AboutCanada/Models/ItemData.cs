@@ -1,10 +1,8 @@
-﻿/* Filename: MainPageViewModel.cs
- * Description: ViewModel for the main page to hold buisness logic 
+﻿/* Filename: ItemData.cs
+ * Description: model for the main page to hold buisness logic 
  * */
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace AboutCanada
 {
